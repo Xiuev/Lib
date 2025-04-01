@@ -1,0 +1,19 @@
+* {
+  background: gray;
+}
+
+.book-card-container {
+  border: 2px solid #9bf79b;
+  width: 15rem;
+  height: 15rem;
+  color: #fff;
+  border-radius: 1rem;
+}
+
+.book-card-container .author {
+  border: 2px solid pink;
+}
+
+.book-card-container p {
+  border: 2px solid #e13737;
+}
