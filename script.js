@@ -4,9 +4,12 @@ let bookTitle = document.querySelector(".book-title");
 let bookAuthor = document.querySelector(".author");
 let bookPages = document.querySelector(".pages");
 let bookIsRead = document.querySelector(".read");
-
+let bookFourm = document.querySelector("#book-fourm");
+let newBookBtn = document.querySelector(".bookBtn");
+let isClicked = false;
 const myLibrary = [];
 
+newBookBtn.addEventListener("click", toggleFourm);
 function Book(title, author, pages, isRead) {
   this.title = title;
   this.author = author;
@@ -40,8 +43,13 @@ function addBooksToDisplay(library) {
 //function to generate new bookCard based on arr size?
 function generateBookCard() {}
 //function to create Fourm
-function createFourm() {
-  //when btn clicked generate some stuff..create container in html, create+ append to in JS
+function toggleFourm() {
+  isClicked = !isClicked;
+  if (isClicked === true) {
+    bookFourm.style.display = "none";
+  } else {
+    bookFourm.style.display = "block";
+  }
 }
 //function calls
 addBooksToDisplay(myLibrary);
