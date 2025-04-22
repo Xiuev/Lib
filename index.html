@@ -7,23 +7,27 @@
     <link rel="stylesheet" href="/style.css" />
   </head>
   <body>
-    <div class="book-card-container">
-      <h1 class="book-title">Title</h1>
-
-      <h3 class="author">Author</h3>
-      <p class="pages">999</p>
-      <p class="read">Unread</p>
-    </div>
+    <div class="book-card-container"></div>
     <div class="book-fourm-container">
       <form id="book-fourm" action="">
-        <label for="">Title:</label><br />
-        <input type="text" /> <br />
-        <label for="">Author:</label> <br />
-        <input type="text" /> <br />
-        <label for="">Pages:</label> <br />
-        <input type="text" /> <br />
-        <label for="">Read:</label> <br />
-        <input type="text" /> <br />
+        <div id="title-input-div">
+          <label for="">Title:</label><br />
+          <input id="book-title-input" type="text" /> <br />
+        </div>
+        <div id="author-input-div">
+          <label for="">Author:</label> <br />
+          <input id="book-author-input" type="text" /> <br />
+        </div>
+        <div id="pages-input-div">
+          <label id="pages-label" for="">Pages:</label> <br />
+          <input id="book-pages-input" type="text" /> <br />
+        </div>
+        <div id="isRead-input-div">
+          <label for="">Read:</label> <br />
+          <input id="book-isRead-input" type="text" /> <br />
+        </div>
+
+        <button id="submitBtn">Submit</button>
       </form>
     </div>
     <button class="bookBtn">NEW BOOK</button>

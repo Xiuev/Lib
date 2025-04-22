@@ -2,14 +2,6 @@
   background: gray;
 }
 
-.book-card-container {
-  border: 2px solid #9bf79b;
-  width: 15rem;
-  height: 15rem;
-  color: #fff;
-  border-radius: 1rem;
-}
-
 .book-card-container .author {
   border: 2px solid pink;
 }
@@ -20,4 +12,16 @@
 #book-fourm {
   color: #fff;
   display: none;
+  border: 2px solid rgb(129, 236, 129);
+  width: 15rem;
+}
+/*CSS CLASSES FOR DYANMIC STUFF*/
+.bookCard {
+  border: 2px solid blue;
+  width: 20rem;
+}
+.errorMsg {
+  color: #de5e5e;
+  border: 1px solid rgb(165, 165, 229);
+  margin: 0;
 }
