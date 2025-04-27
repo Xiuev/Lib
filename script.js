@@ -15,8 +15,10 @@ let titleInputDiv = document.querySelector("#title-input-div");
 let pagesInputDiv = document.querySelector("#pages-input-div");
 let authorInputDiv = document.querySelector("#author-input-div");
 let isReadInputDiv = document.querySelector("#isRead-input-div");
+
 let isClicked = false;
-const myLibrary = [];
+//let isRead = false;
+let myLibrary = [];
 
 newBookBtn.addEventListener("click", toggleFourm);
 function Book(title, author, pages, isRead) {
@@ -26,65 +28,95 @@ function Book(title, author, pages, isRead) {
   this.isRead = isRead;
   this.uuid = self.crypto.randomUUID();
   this.info = function () {
-    return `${this.title} by ${this.author} ${this.numOfPages} pages, ${isRead}, ${uuid}`;
+    return `${this.title} by ${this.author} ${this.numOfPages} pages, ${this.isRead}, ${this.uuid}`;
   };
 }
-
-function addBookToLibrary(title, author, pages, isRead) {
-  // take params, create a book then store it in the array
-  let newBook = new Book(title, author, pages, isRead);
-  myLibrary.push(newBook);
-}
-
-function addBooksToDisplay(library) {
-  for (let i = 0; i < library.length; i++) {
-    bookTitle.textContent = library[i].title;
-    bookAuthor.textContent = library[i].author;
-    bookPages.textContent = library[i].numOfPages;
-    bookIsRead.textContent = library[i].isRead;
-    //console.log(library[i].title);
+//book protoype
+Book.prototype.toggleReadStatus = function () {
+  //toggle isRead status
+  if (this.isRead) {
+    this.isRead = false;
+  } else {
+    this.isRead = true;
   }
-}
+};
 //function to generate new bookCard based on arr size?
-function generateBookCard() {
+function generateBookCard(userBook) {
   //apply document.createlement here
   let bookCard = document.createElement("div"); //container for each card that will be created
   bookCard.classList.add("bookCard"); //css
   let bookCardTitle = document.createElement("h3");
-  bookCardTitle.textContent = bookTitleInput.value;
+  bookCardTitle.textContent = userBook.title;
   let bookCardAuthor = document.createElement("h2");
-  bookCardAuthor.textContent = bookAuthorInput.value;
+  bookCardAuthor.textContent = userBook.author;
   let bookCardPages = document.createElement("p");
-  bookCardPages.textContent = bookPagesInput.value;
+  bookCardPages.textContent = userBook.numOfPages;
   let bookCardIsRead = document.createElement("p");
-  bookCardIsRead.textContent = bookIsReadInput.value;
+  bookCardIsRead.textContent = userBook.isRead ? "yes" : "no";
   let removeBookBtn = document.createElement("button");
+  let changeReadStatusBtn = document.createElement("button");
+  changeReadStatusBtn.textContent = "Read Status";
+  changeReadStatusBtn.classList.add("change-read-status");
+  changeReadStatusBtn.setAttribute("data-id", userBook.uuid);
   removeBookBtn.textContent = "Delete Book";
   removeBookBtn.classList.add("delete-btn");
-  //removeBookBtn.setAttribute("data-id", userBook.uuid);
+  removeBookBtn.setAttribute("data-id", userBook.uuid);
+  console.log(removeBookBtn.getAttribute("data-id"));
+  console.log(
+    `Read status button unique id is: ${changeReadStatusBtn.getAttribute(
+      "data-id"
+    )}`
+  );
   bookCardContainer.appendChild(bookCard);
   bookCard.appendChild(bookCardTitle);
   bookCard.appendChild(bookCardAuthor);
   bookCard.appendChild(bookCardPages);
   bookCard.appendChild(bookCardIsRead);
   bookCard.appendChild(removeBookBtn);
-  console.log(removeBookBtn.getAttribute("data-id"));
+  bookCard.appendChild(changeReadStatusBtn);
+
+  changeReadStatusBtn.addEventListener("click", function () {
+    //identify correct book instance
+    for (let i = 0; i < myLibrary.length; i++) {
+      if (myLibrary[i].uuid === changeReadStatusBtn.getAttribute("data-id")) {
+        myLibrary[i].toggleReadStatus();
+        bookCardIsRead.textContent = userBook.isRead ? "yes" : "no";
+        console.log(myLibrary);
+      }
+    }
+  });
+
+  removeBookBtn.addEventListener("click", function () {
+    //let filteredBooks return new array EXCLUDING deleted books
+    let filteredBooks = myLibrary.filter(
+      (book) => book.uuid !== removeBookBtn.getAttribute("data-id")
+    );
+    myLibrary = filteredBooks;
+    console.log(myLibrary);
+    bookCardContainer.innerHTML = "";
+    myLibrary.forEach((book) => generateBookCard(book));
+  });
 }
 //function to create new Book
 function addNewBook(event) {
   event.preventDefault();
-  validateBookForm(); //bookcard being generated in this function
-
+  let cleanReadInput = bookIsReadInput.value.toLowerCase();
+  if (cleanReadInput === "yes") {
+    cleanReadInput = true;
+  } else {
+    cleanReadInput = false;
+  }
   let userBook = new Book(
-    bookTitleInput.value.trim(),
-    bookAuthorInput.value.trim(),
-    bookPagesInput.value.trim(),
-    bookIsReadInput.value.trim()
+    bookTitleInput.value.trim().toLowerCase(),
+    bookAuthorInput.value.trim().toLowerCase(),
+    parseInt(bookPagesInput.value.trim()),
+    cleanReadInput
   );
-
-  //generateBookCard();
-  myLibrary.push(userBook);
-  console.log(myLibrary);
+  if (validateBookForm()) {
+    myLibrary.push(userBook);
+    console.log(myLibrary);
+    generateBookCard(userBook);
+  }
 }
 //function to create Fourm
 function toggleFourm() {
@@ -140,14 +172,13 @@ function validateBookForm() {
     isValid = false;
   }
   if (isValid) {
-    generateBookCard();
+    return true;
   }
 }
 //function to remove book from the library
-function removeBook() {
-  for (let i = 0; i < myLibrary.length; i++) {}
+function deleteBook() {
+  // if running into scope issues try passing obj,parameter thigny
 }
 
 //function calls
 submitBtn.addEventListener("click", addNewBook);
-addBooksToDisplay(myLibrary);
